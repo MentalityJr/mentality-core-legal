@@ -1,6 +1,6 @@
 # Terms of Service: Mentality Core
 
-Last updated: 07/11/25
+Last updated: 07/11/26
 
 Mentality Core is a Discord bot operated by [YOUR NAME] for the Mentality Studios community server. By adding the bot or using its commands, you agree to these terms.
 
