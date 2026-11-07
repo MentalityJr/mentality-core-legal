@@ -2,7 +2,7 @@
 
 Last updated: 07/11/26
 
-Mentality Core is a Discord bot operated by [YOUR NAME] for the Mentality Studios community server. By adding the bot or using its commands, you agree to these terms.
+Mentality Core is a Discord bot operated by [MentalityJr] for the Mentality Studios community server. By adding the bot or using its commands, you agree to these terms.
 
 ## 1. What the bot does
 Mentality Core provides server management tools: moderation actions and case records, applications and tickets, activity and leave-of-absence logs, invite competitions, auctions, giveaways, polls, role panels, and general utilities.
