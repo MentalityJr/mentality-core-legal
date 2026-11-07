@@ -1,3 +1,5 @@
+   ---
+   ---
 # Terms of Service: Mentality Core
 
 Last updated: 07/11/26
