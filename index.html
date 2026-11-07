@@ -4,155 +4,279 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mentality Core | Mentality Studios</title>
-<meta name="description" content="Mentality Core is the official bot for Mentality Studios: quotas, applications, tickets, auctions, invite competitions and more.">
+<meta name="description" content="Mentality Core is the official bot for Mentality Studios: quotas, leave, auctions, applications, tickets, invite races and moderation.">
+<link rel="icon" href="assets/pfp.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #07080d;
-    --card: rgba(255, 255, 255, 0.04);
-    --border: rgba(255, 255, 255, 0.09);
-    --text: #e9ebf5;
-    --muted: #9aa0b8;
-    --accent: #7c5cff;
-    --accent2: #22d3ee;
+    --ink: #0a0a0a;
+    --paper: #f2f2f2;
+    --grey: #8a8a8a;
+    --line: rgba(255, 255, 255, 0.14);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
   }
-  .glow {
-    position: fixed; border-radius: 50%; filter: blur(120px); opacity: .35; z-index: 0; pointer-events: none;
-    animation: float 14s ease-in-out infinite alternate;
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: .18;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .glow.one { width: 480px; height: 480px; background: var(--accent); top: -120px; left: -120px; }
-  .glow.two { width: 420px; height: 420px; background: var(--accent2); bottom: -120px; right: -100px; animation-delay: -6s; }
-  @keyframes float { to { transform: translate(60px, 40px) scale(1.1); } }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
 
   nav {
-    position: sticky; top: 0; z-index: 10;
+    position: sticky; top: 0; z-index: 50;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 18px 6vw;
-    background: rgba(7, 8, 13, 0.7); backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    padding: 14px 6vw;
+    background: rgba(10, 10, 10, .88); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
   }
-  .brand { font-weight: 800; letter-spacing: .5px; font-size: 1.1rem; }
-  .brand span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; color: transparent; }
-  nav ul { list-style: none; display: flex; gap: 22px; }
-  nav a { color: var(--muted); text-decoration: none; font-size: .95rem; transition: color .2s; }
-  nav a:hover { color: var(--text); }
+  .logo { display: flex; align-items: center; gap: 12px; font-family: 'Anton', sans-serif; font-size: 1.4rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; }
+  .logo img { width: 38px; height: 38px; border-radius: 50%; filter: grayscale(1); }
+  .logo span { color: var(--grey); }
+  nav ul { list-style: none; display: flex; gap: 26px; }
+  nav a.link { font-family: 'Space Mono', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: var(--grey); transition: color .2s; }
+  nav a.link:hover { color: var(--paper); }
 
-  section { position: relative; z-index: 1; padding: 90px 6vw; }
-  .hero { text-align: center; padding-top: 120px; padding-bottom: 110px; }
-  .eyebrow {
-    display: inline-block; padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px;
-    color: var(--muted); font-size: .85rem; margin-bottom: 26px; background: var(--card);
+  .hero {
+    position: relative; min-height: 92vh;
+    display: grid; place-items: center; text-align: center;
+    padding: 90px 6vw; overflow: hidden; background: #000;
+  }
+  .hero .bg {
+    position: absolute; inset: 0;
+    background: url("assets/banner.png") center / cover no-repeat;
+    filter: grayscale(1) contrast(1.25) brightness(.5);
+    transform: scale(1.04);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .hero .content { position: relative; z-index: 2; max-width: 900px; }
+  .sticker {
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: .8rem; text-transform: uppercase;
+    letter-spacing: 2px; padding: 8px 16px; background: var(--paper); color: var(--ink);
+    transform: rotate(-2deg); margin-bottom: 28px;
   }
   h1 {
-    font-size: clamp(2.6rem, 7vw, 5rem); font-weight: 900; line-height: 1.05; letter-spacing: -1px;
+    font-family: 'Anton', sans-serif; font-size: clamp(3.2rem, 11vw, 8.5rem);
+    line-height: .92; text-transform: uppercase; letter-spacing: -1px;
+    text-shadow: 0 0 40px rgba(255,255,255,.15);
   }
-  h1 .grad { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; color: transparent; }
-  .lead { max-width: 620px; margin: 22px auto 40px; color: var(--muted); font-size: 1.15rem; }
+  h1 .outline { color: transparent; -webkit-text-stroke: 2px var(--paper); }
+  .lead { margin: 26px auto 40px; max-width: 580px; color: #cfcfcf; font-size: 1.1rem; }
   .buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
   .btn {
-    padding: 14px 26px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: transform .2s, box-shadow .2s;
+    display: inline-block; padding: 15px 30px; font-family: 'Space Mono', monospace; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; font-size: .85rem; text-decoration: none;
+    border: 2px solid var(--paper); transition: transform .15s, box-shadow .15s, background .15s, color .15s;
   }
-  .btn:hover { transform: translateY(-2px); }
-  .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff; box-shadow: 0 10px 30px rgba(124, 92, 255, .35); }
-  .btn.ghost { border: 1px solid var(--border); color: var(--text); background: var(--card); }
+  .btn:hover { transform: translate(-3px, -3px); box-shadow: 4px 4px 0 var(--paper); }
+  .btn.solid { background: var(--paper); color: var(--ink); }
+  .btn.ghost { background: transparent; color: var(--paper); }
 
-  h2 { font-size: 2rem; margin-bottom: 12px; letter-spacing: -.5px; }
-  .sub { color: var(--muted); margin-bottom: 40px; max-width: 640px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .ticker { background: var(--paper); color: var(--ink); overflow: hidden; white-space: nowrap; padding: 14px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+  .ticker-track { display: inline-block; animation: slide 26s linear infinite; font-family: 'Anton', sans-serif; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; }
+  .ticker-track span { margin: 0 26px; }
+  @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  section { position: relative; padding: 110px 6vw; }
+  .label { font-family: 'Space Mono', monospace; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-bottom: 14px; display: block; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(2.2rem, 5vw, 4rem); text-transform: uppercase; line-height: 1; margin-bottom: 18px; }
+  .sub { color: #b5b5b5; max-width: 620px; margin-bottom: 56px; }
+
+  .about { display: grid; grid-template-columns: minmax(240px, 380px) 1fr; gap: 60px; align-items: center; }
+  .about img { width: 100%; filter: grayscale(1) contrast(1.1); border: 1px solid var(--line); }
+  .about p { color: #cfcfcf; font-size: 1.1rem; margin-bottom: 18px; }
+  @media (max-width: 760px) { .about { grid-template-columns: 1fr; } }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 26px; }
   .card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 28px;
-    transition: transform .25s, border-color .25s;
+    position: relative; background: #151515; padding: 34px 28px;
+    border: 1px solid var(--line);
+    clip-path: polygon(0 0, 96% 2%, 100% 16%, 98% 100%, 3% 97%, 0 82%);
+    transition: transform .2s, background .2s;
   }
-  .card:hover { transform: translateY(-4px); border-color: rgba(124, 92, 255, .5); }
-  .icon { font-size: 1.8rem; margin-bottom: 14px; }
-  .card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-  .card p { color: var(--muted); font-size: .95rem; }
+  .card:nth-child(even) { clip-path: polygon(2% 0, 100% 3%, 97% 100%, 0 96%, 3% 60%); }
+  .card:hover { transform: rotate(-.6deg) translateY(-4px); background: #1d1d1d; }
+  .card .num { font-family: 'Space Mono', monospace; color: var(--grey); font-size: .8rem; }
+  .card h3 { font-family: 'Anton', sans-serif; font-size: 1.6rem; text-transform: uppercase; margin: 10px 0; letter-spacing: .5px; }
+  .card p { color: #b5b5b5; font-size: .95rem; }
 
-  .stats { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; text-align: center; }
-  .stat strong { display: block; font-size: 2.4rem; font-weight: 900; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; color: transparent; }
-  .stat span { color: var(--muted); font-size: .9rem; }
+  .showcase { background: #000; border-top: 1px solid var(--line); }
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+  .shot { background: var(--paper); color: var(--ink); padding: 16px 16px 26px; transform: rotate(-1deg); transition: transform .25s; }
+  .shot:nth-child(even) { transform: rotate(1deg); }
+  .shot:hover { transform: rotate(0) scale(1.02); }
+  .shot img { width: 100%; height: auto; filter: grayscale(1) contrast(1.1); border: 1px solid #000; }
+  .shot h3 { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 1.5rem; margin: 16px 0 6px; }
+  .shot p { font-family: 'Space Mono', monospace; font-size: .8rem; }
 
-  .cta {
-    text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 28px; padding: 70px 30px;
+  .stats { display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 50px 6vw; }
+  .stat strong { display: block; font-family: 'Anton', sans-serif; font-size: 3.4rem; line-height: 1; }
+  .stat span { font-family: 'Space Mono', monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--grey); }
+
+  .cta { text-align: center; background: var(--paper); color: var(--ink); clip-path: polygon(0 4%, 100% 0, 98% 100%, 2% 96%); padding: 120px 6vw; }
+  .cta h2 { color: var(--ink); }
+  .cta .label { color: #555; }
+  .cta .sub { color: #333; margin: 0 auto 40px; }
+  .cta .btn { border-color: var(--ink); }
+  .cta .btn.solid { background: var(--ink); color: var(--paper); }
+  .cta .btn.ghost { color: var(--ink); }
+  .cta .btn:hover { box-shadow: 4px 4px 0 var(--ink); }
+
+  footer {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    padding: 34px 6vw; border-top: 1px solid var(--line); font-family: 'Space Mono', monospace; font-size: .8rem; color: var(--grey);
   }
+  footer a { text-decoration: none; margin-left: 18px; }
+  footer a:hover { color: var(--paper); }
 
-  footer { position: relative; z-index: 1; text-align: center; color: var(--muted); padding: 40px 6vw; border-top: 1px solid var(--border); font-size: .9rem; }
-  footer a { color: var(--muted); margin: 0 10px; }
-  footer a:hover { color: var(--text); }
-
-  @media (max-width: 720px) { nav ul { display: none; } .hero { padding-top: 90px; } }
+  @media (max-width: 760px) { nav ul { display: none; } .hero { min-height: 80vh; } }
+  @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
 </style>
 </head>
 <body>
-<div class="glow one"></div>
-<div class="glow two"></div>
 
 <nav>
-  <div class="brand">MENTALITY <span>CORE</span></div>
+  <a class="logo" href="#top"><img src="assets/server-icon.png" alt="Mentality Studios"> Mentality <span>Core</span></a>
   <ul>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#stats">Stats</a></li>
-    <li><a href="#join">Join</a></li>
-    <li><a href="https://discord.gg/mtly">Discord</a></li>
+    <li><a class="link" href="#about">About</a></li>
+    <li><a class="link" href="#features">Features</a></li>
+    <li><a class="link" href="#showcase">In the bot</a></li>
+    <li><a class="link" href="https://discord.gg/mtly">Discord</a></li>
   </ul>
 </nav>
 
-<section class="hero">
-  <div class="eyebrow">Official bot for Mentality Studios</div>
-  <h1>The bot behind<br><span class="grad">Mentality Studios</span></h1>
-  <p class="lead">Quotas, applications, tickets, auctions, invite competitions and moderation, all in one place, running 24/7.</p>
-  <div class="buttons">
-    <a class="btn primary" href="#join">Add Mentality Core</a>
-    <a class="btn ghost" href="#features">See what it does</a>
-  </div>
-</section>
-
-<section id="features">
-  <h2>Everything in one bot</h2>
-  <p class="sub">Built for a community that runs events, teaches, and competes. Every feature is a slash command.</p>
-  <div class="grid">
-    <div class="card"><div class="icon">🛡️</div><h3>Moderation</h3><p>Warn, timeout, ban and kick with a case number for every action, plus a full history for each member.</p></div>
-    <div class="card"><div class="icon">📋</div><h3>Quota tracking</h3><p>Log activity with a screenshot, get a weekly report, and let the bot handle strikes for missed quotas.</p></div>
-    <div class="card"><div class="icon">🏖️</div><h3>Leave of absence</h3><p>Request time off with a simple form. Approved leave pauses your quota automatically.</p></div>
-    <div class="card"><div class="icon">🏆</div><h3>Invite competitions</h3><p>Run invite races with live leaderboards. Only people who stay in the server count.</p></div>
-    <div class="card"><div class="icon">💰</div><h3>Auctions</h3><p>Live auctions with bid buttons and a highest-bid tracker. Only the winner is charged.</p></div>
-    <div class="card"><div class="icon">🎓</div><h3>Instructor tools</h3><p>Three instructor tiers, session and tryout pings, and tickets for every training request.</p></div>
-    <div class="card"><div class="icon">🎫</div><h3>Tickets & applications</h3><p>Staff applications, role applications and support tickets with claim and close buttons.</p></div>
-    <div class="card"><div class="icon">🎲</div><h3>Fun & info</h3><p>8-ball, dice, reminders, avatars and server info, all one command away.</p></div>
-  </div>
-</section>
-
-<section id="stats">
-  <div class="stats">
-    <div class="stat"><strong>14K+</strong><span>Members</span></div>
-    <div class="stat"><strong>24/7</strong><span>Always online</span></div>
-    <div class="stat"><strong>100+</strong><span>Slash commands</span></div>
-  </div>
-</section>
-
-<section id="join">
-  <div class="cta">
-    <h2>Ready to join?</h2>
-    <p class="sub" style="margin: 14px auto 36px;">Join the server and get Mentality Core in your own community, or use it in Mentality Studios right now.</p>
+<header class="hero" id="top">
+  <div class="bg" role="img" aria-label="Mentality Core banner artwork"></div>
+  <div class="content">
+    <span class="sticker">Official bot · Mentality Studios</span>
+    <h1>Mentality<br><span class="outline">Core</span></h1>
+    <p class="lead">Quotas, leave, auctions, applications, tickets and invite races, running 24/7 in the Mentality Studios server.</p>
     <div class="buttons">
-      <a class="btn primary" href="https://discord.gg/mtly">Join Mentality Studios</a>
-      <a class="btn ghost" href="https://discord.com/oauth2/authorize?client_id=1531289720284254258&scope=bot+applications.commands&permissions=8">Add the bot</a>
+      <a class="btn solid" href="#join">Add the bot</a>
+      <a class="btn ghost" href="#features">What it does</a>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Quotas ✦ Leave of absence ✦ Auctions ✦ Applications ✦ Tickets ✦ Invite races ✦ Moderation ✦ 24/7</span>
+    <span>Quotas ✦ Leave of absence ✦ Auctions ✦ Applications ✦ Tickets ✦ Invite races ✦ Moderation ✦ 24/7</span>
+  </div>
+</div>
+
+<section class="about" id="about">
+  <img src="assets/pfp.png" alt="Mentality Core character artwork" loading="lazy">
+  <div>
+    <span class="label">00 — The bot</span>
+    <h2>Mentality Core</h2>
+    <p>Mentality Core runs the day-to-day of Mentality Studios: who's doing what each week, who's away, what's up for auction, and who's bringing people in.</p>
+    <p>Built and maintained by MentalityJr. Every feature is a slash command, so there's nothing to memorise. Type <strong>/</strong> and it's there.</p>
+    <div class="buttons" style="justify-content:flex-start; margin-top: 28px;">
+      <a class="btn solid" href="#join">Add the bot</a>
     </div>
   </div>
 </section>
 
+<section id="features">
+  <span class="label">01 — Features</span>
+  <h2>Built for the server</h2>
+  <p class="sub">Every feature is a slash command. Type / and it's there.</p>
+  <div class="grid">
+    <div class="card"><span class="num">01</span><h3>Quotas</h3><p>Log every event or session with a screenshot. Weekly reports, with strikes handled for you.</p></div>
+    <div class="card"><span class="num">02</span><h3>Leave</h3><p>Request time off with a form. Approved leave pauses your quota, so you're never struck while away.</p></div>
+    <div class="card"><span class="num">03</span><h3>Auctions</h3><p>Live bid buttons and a highest-bid tracker. Nothing is charged during a bidding war. Only the winner pays.</p></div>
+    <div class="card"><span class="num">04</span><h3>Applications</h3><p>Role applications with requirement screens, cooldowns, and results sent straight to each team.</p></div>
+    <div class="card"><span class="num">05</span><h3>Tickets</h3><p>Pick a category, get a private channel, claim it, close it. Only the right roles can see it.</p></div>
+    <div class="card"><span class="num">06</span><h3>Invite races</h3><p>Run an invite competition with a live leaderboard. People who leave take their credit with them.</p></div>
+    <div class="card"><span class="num">07</span><h3>Moderation</h3><p>Warn, timeout, kick, ban. Every action gets a case number, with a full history for each member.</p></div>
+    <div class="card"><span class="num">08</span><h3>Fun</h3><p>8-ball, dice, coin flips, reminders, avatars and server info, one slash command away.</p></div>
+  </div>
+</section>
+
+<section class="showcase" id="showcase">
+  <span class="label">02 — Inside the bot</span>
+  <h2>The real thing</h2>
+  <p class="sub">Screenshots straight from the live server.</p>
+  <div class="shots">
+    <figure class="shot">
+      <img src="assets/auction.png" alt="Auction post with a live highest bid and a Place Bid button" loading="lazy">
+      <h3>Auctions</h3>
+      <p>Highest bid updates live. One press to bid.</p>
+    </figure>
+    <figure class="shot">
+      <img src="assets/quota.png" alt="Weekly quota board showing who met their quota and strike buttons" loading="lazy">
+      <h3>Quota board</h3>
+      <p>Who met the week, who didn't, and one click to strike.</p>
+    </figure>
+    <figure class="shot">
+      <img src="assets/eventhoster-log.png" alt="Event Hoster activity log button" loading="lazy">
+      <h3>Log it</h3>
+      <p>One button after every event you run.</p>
+    </figure>
+    <figure class="shot">
+      <img src="assets/eventhoster-logged.png" alt="Event Hoster activity logged with the proof attached" loading="lazy">
+      <h3>Activity logs</h3>
+      <p>Every event logged with its proof attached.</p>
+    </figure>
+    <figure class="shot">
+      <img src="assets/instructor-log.png" alt="Instructor activity log button" loading="lazy">
+      <h3>Instructors</h3>
+      <p>The same system for every instructor tier.</p>
+    </figure>
+    <figure class="shot">
+      <img src="assets/loa-panel.png" alt="Leave of absence panel with a Request LOA button" loading="lazy">
+      <h3>Leave panel</h3>
+      <p>Request time off with one form.</p>
+    </figure>
+    <figure class="shot">
+      <img src="assets/loa-logged.png" alt="Leave of absence logged with dates and reason" loading="lazy">
+      <h3>Leave logged</h3>
+      <p>Dates, reason, and a quota that pauses itself.</p>
+    </figure>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><strong>14K+</strong><span>Members</span></div>
+  <div class="stat"><strong>24/7</strong><span>Always on</span></div>
+  <div class="stat"><strong>100+</strong><span>Slash commands</span></div>
+</div>
+
+<section class="cta" id="join">
+  <span class="label">03 — Join</span>
+  <h2>Get into the server</h2>
+  <p class="sub">Join Mentality Studios to see Mentality Core in action, or add the bot to your own server.</p>
+  <div class="buttons">
+    <a class="btn solid" href="https://discord.gg/mtly">Join Mentality Studios</a>
+    <a class="btn ghost" href="https://discord.com/oauth2/authorize?client_id=1531289720284254258&scope=bot+applications.commands&permissions=8">Add the bot</a>
+  </div>
+</section>
+
 <footer>
-  © 2026 Mentality Studios · Mentality Core
-  <br><br>
-  <a href="terms.html">Terms of Service</a> · <a href="privacy.html">Privacy Policy</a> · <a href="https://discord.gg/mtly">Discord</a>
+  <span>© 2026 Mentality Studios · Mentality Core</span>
+  <span>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="https://discord.gg/mtly">Discord</a>
+  </span>
 </footer>
+
 </body>
 </html>
