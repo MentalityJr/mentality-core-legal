@@ -26,7 +26,10 @@
   nav a.link { font-family:'Space Mono', monospace; font-size:.8rem; text-transform:uppercase; letter-spacing:1px; text-decoration:none; color:var(--grey); }
   nav a.link:hover { color:var(--paper); }
 
-  .hero { padding:110px 6vw 70px; text-align:left; border-bottom:1px solid var(--line); background:#000; }
+  .hero { position:relative; padding:110px 6vw 70px; border-bottom:1px solid var(--line); background:#000; overflow:hidden; }
+  .hero::before { content:""; position:absolute; inset:0; background:url("assets/banner.png") center / cover no-repeat; filter:grayscale(1) contrast(1.2) brightness(.4); }
+  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, #0a0a0a 8%, rgba(10,10,10,.55) 60%, rgba(10,10,10,.85)); }
+  .hero > * { position:relative; z-index:1; }
   .sticker { display:inline-block; font-family:'Space Mono', monospace; font-size:.8rem; text-transform:uppercase; letter-spacing:2px;
     padding:8px 16px; background:var(--paper); color:var(--ink); transform:rotate(-2deg); margin-bottom:24px; }
   h1 { font-family:'Anton', sans-serif; font-size:clamp(2.8rem, 8vw, 6rem); line-height:.95; text-transform:uppercase; letter-spacing:-1px; }
@@ -61,7 +64,7 @@
 <header class="hero">
   <span class="sticker">Legal · Mentality Core</span>
   <h1>Terms of<br>Service</h1>
-  <p class="meta">Last updated: 07/11/26</p>
+  <p class="meta">Last updated: [DATE]</p>
 </header>
 
 <main class="wrap">
@@ -95,7 +98,7 @@
   <p>We may stop the bot for any server or user that breaks these terms or the server rules.</p>
 
   <h2>10. Contact</h2>
-  <p>Questions about these terms: Mentalityjrr@outlook.com</p>
+  <p>Questions about these terms: [YOUR CONTACT EMAIL OR DISCORD HANDLE]</p>
 
   <a class="back" href="index.html">← Back to home</a>
 </main>
